@@ -1,94 +1,72 @@
-# San Remo CRM
+# ChaveFlow CRM
 
-CRM imobiliário desenvolvido como desafio técnico Full Stack para a **San Remo Imóveis**.
+**CRM imobiliário Full Stack com gestão de leads, controle de presença por QR Code e distribuição round-robin de oportunidades.**
 
-A aplicação permite gerenciar leads, acompanhar o funil de vendas, controlar a presença de corretores por QR Code e distribuir oportunidades por round-robin, respeitando a ordem da fila e a disponibilidade dos profissionais.
+O ChaveFlow CRM é uma aplicação web desenvolvida com **React, TypeScript e Supabase**, voltada à organização de leads imobiliários, acompanhamento de negociações e distribuição de oportunidades entre corretores.
 
-O projeto prioriza experiência do usuário, responsividade, segurança, consistência das operações e persistência dos dados.
+O projeto demonstra conhecimentos em desenvolvimento Full Stack, autenticação, autorização, PostgreSQL, segurança, concorrência, regras de negócio e interfaces responsivas.
 
-## Links do projeto
+## Demonstração online
 
-- **Aplicação publicada:** https://san-remo-crm-rose.vercel.app
-- **Repositório GitHub:** https://github.com/brunobonettib/san-remo-crm
+**Aplicação:** https://san-remo-crm-rose.vercel.app
 
-## 1. Tecnologias utilizadas
+**Repositório GitHub:** https://github.com/brunobonettib/chaveflow-crm
+
+### Acessos de demonstração
+
+Utilize as contas abaixo para testar os diferentes perfis do sistema.
+
+| Perfil | E-mail | Senha |
+|---|---|---|
+| Gestor | gestor.demo@example.com | Senhadogestor123. |
+| Corretora Ana | ana.demo@example.com | Senhadaana123. |
+| Corretor Pedro | pedro.demo@example.com | Senhadopedro123. |
+| Corretora Carla | carla.demo@example.com | Senhadacarla123. |
+
+**Ambiente demonstrativo:** todos os usuários e leads são fictícios. O ambiente é compartilhado, portanto os dados podem ser modificados por outros visitantes.
+
+Para experimentar a distribuição, entre como gestor, cadastre um lead no reservatório e confirme a presença de um corretor utilizando o QR Code.
+
+## Tecnologias utilizadas
 
 | Camada | Tecnologia |
 |---|---|
-| Frontend | React, TypeScript, Vite |
-| Banco de dados | Supabase PostgreSQL |
+| Frontend | React, TypeScript e Vite |
 | Autenticação | Supabase Auth |
-| Segurança | Row Level Security (RLS), permissões PostgreSQL e funções RPC |
+| Banco de dados | PostgreSQL (Supabase) |
+| Segurança | Row Level Security (RLS) |
+| Regras de negócio | Funções RPC em PL/pgSQL |
 | Navegação | React Router |
 | QR Code | qrcode.react |
-| Versionamento | Git e GitHub |
 | Hospedagem | Vercel |
-| Inteligência artificial | OpenAI Codex e ChatGPT |
+| Versionamento | Git e GitHub |
+| IA no desenvolvimento | OpenAI Codex e ChatGPT |
 
-## 2. Arquitetura e decisões técnicas
+## Funcionalidades
 
-A aplicação utiliza uma arquitetura Full Stack com **React e TypeScript no frontend**, integrado ao **Supabase para autenticação, persistência e execução das regras críticas de negócio**.
+### Painel do gestor
 
-A solução foi projetada para atender aos requisitos do desafio sem introduzir complexidade desnecessária, como um servidor de aplicação separado ou microsserviços.
+- Dashboard com indicadores de leads e oportunidades.
+- Cadastro, edição e consulta de contatos.
+- Funil Kanban com seis etapas.
+- Reservatório de leads sem responsável.
+- Visualização da fila de corretores habilitados.
+- Geração e renovação automática do QR Code de presença.
+- Distribuição round-robin de oportunidades.
+- Histórico persistente de distribuições.
+- Consulta de detalhes e observações dos leads.
 
-### Organização da solução
-
-- **Frontend:** interfaces de gestor e corretor, navegação, formulários, funil Kanban, estados de carregamento e comunicação com o Supabase.
-- **Autenticação:** Supabase Auth, responsável por identificar os usuários e manter suas sessões.
-- **Autorização:** perfis de gestor e corretor, com restrições aplicadas tanto na interface quanto no PostgreSQL.
-- **Persistência:** PostgreSQL, responsável por armazenar leads, observações, perfis, presenças e histórico de distribuição.
-- **Regras críticas:** funções RPC executadas no banco para validar presença, controlar a fila e realizar distribuições.
-- **Hospedagem:** frontend publicado na Vercel, conectado ao projeto Supabase.
-
-### Por que utilizar funções RPC no PostgreSQL?
-
-As operações sensíveis não dependem exclusivamente da lógica executada no navegador.
-
-A validação de presença e a distribuição round-robin são realizadas por funções no banco de dados, permitindo:
-
-- Verificar permissões antes de executar operações.
-- Utilizar o horário do servidor para validar o QR Code e a expiração da presença.
-- Executar a distribuição de forma transacional.
-- Aplicar bloqueios de concorrência para evitar distribuições inconsistentes.
-- Registrar a atribuição e o histórico de forma consistente.
-
-Essa abordagem reduz a possibilidade de inconsistências causadas por requisições simultâneas ou manipulação do frontend.
-
-### Segurança dos dados
-
-O controle de acesso utiliza **Row Level Security (RLS)** e verificações de autorização no PostgreSQL.
-
-O gestor pode consultar todos os leads, enquanto o corretor acessa somente aqueles atribuídos a ele.
-
-As operações administrativas possuem validações adicionais no banco. Assim, esconder funcionalidades na interface não é a única proteção aplicada.
-
-A aplicação utiliza apenas a chave publicável do Supabase no frontend, sem expor credenciais privilegiadas.
-
-## 3. Funcionalidades
-
-### Perfil Gestor
+### Painel do corretor
 
 - Autenticação individual.
-- Visualização de todos os leads em funil Kanban.
-- Cadastro, edição e consulta de contatos.
-- Reservatório de leads sem responsável.
-- Consulta de detalhes e observações.
-- Exibição do QR Code de presença.
-- Acompanhamento da fila de corretores habilitados.
-- Distribuição round-robin de oportunidades.
-- Histórico persistente das distribuições.
-
-### Perfil Corretor
-
-- Login individual.
-- Confirmação de presença por QR Code.
-- Visualização exclusiva dos próprios leads.
+- Visualização exclusiva dos leads atribuídos.
 - Atualização das etapas de atendimento.
-- Registro e consulta de observações.
+- Registro de observações com data.
+- Confirmação de presença pelo celular mediante leitura do QR Code.
 
 ### Funil de vendas
 
-O CRM possui seis etapas:
+O sistema organiza as oportunidades nas seguintes etapas:
 
 1. Novo
 2. Em contato
@@ -97,70 +75,97 @@ O CRM possui seis etapas:
 5. Ganho
 6. Perdido
 
-Os leads não atribuídos permanecem no reservatório do gestor até serem distribuídos.
+Leads sem responsável permanecem no reservatório até a distribuição.
 
-### Controle de presença por QR Code
+## Controle de presença por QR Code
 
-O QR Code é disponibilizado na área do gestor e atualizado automaticamente a cada cinco minutos.
-
-O corretor utiliza a câmera do celular para acessar o link, autentica-se quando necessário e confirma sua presença.
+O ChaveFlow CRM utiliza uma fila contínua de corretores habilitados por presença.
 
 **Regras implementadas:**
 
-- Somente o QR Code vigente é aceito.
+- O QR Code é renovado automaticamente a cada cinco minutos.
+- Somente o código vigente confirma presença.
 - Cada confirmação habilita o corretor por cinco horas.
-- Renovar uma presença válida preserva a posição na fila.
+- A renovação durante a validade preserva sua posição.
 - Após a expiração, uma nova confirmação coloca o corretor no final da fila.
-- A fila é contínua, sem abertura ou encerramento de sessões.
-- Os horários e a validade são verificados no banco de dados.
+- A validação utiliza o horário do banco de dados, evitando depender do relógio do navegador.
 
-### Distribuição round-robin
+## Distribuição round-robin
 
-Cada acionamento do gestor distribui um lead, selecionando:
+A distribuição é iniciada pelo gestor e processa uma oportunidade por acionamento.
 
-1. O lead mais antigo do reservatório.
-2. O próximo corretor habilitado na ordem da fila.
+O algoritmo seleciona o **lead mais antigo do reservatório** e o **próximo corretor com presença válida**.
 
 Após receber um lead, o corretor é movido para o final da fila.
 
-A operação é executada de forma transacional no PostgreSQL, garantindo consistência entre a atribuição, a movimentação da fila e o registro do histórico.
+O banco de dados garante a consistência da operação por meio de transações, bloqueios e restrições de integridade.
 
 O sistema também:
 
 - Ignora corretores com presença expirada.
-- Impede que o mesmo lead seja distribuído duas vezes.
-- Informa quando não há leads disponíveis.
-- Informa quando não há corretores habilitados.
-- Mantém um histórico com lead, corretor e data da distribuição.
+- Impede a distribuição duplicada do mesmo lead.
+- Registra o histórico com lead, corretor e data.
+- Informa quando não existem leads disponíveis.
+- Informa quando não existem corretores habilitados.
 
-## 4. Contas de demonstração
+## Arquitetura e decisões técnicas
 
-A aplicação possui usuários fictícios para reprodução dos fluxos.
+A aplicação utiliza uma arquitetura Full Stack com frontend React integrado diretamente ao Supabase.
 
-| Perfil | E-mail |
-|---|---|
-| Gestor | gestor.demo@example.com |
-| Corretor — Ana Martins | ana.demo@example.com |
-| Corretor — Pedro Oliveira | pedro.demo@example.com |
-| Corretora — Carla Souza | carla.demo@example.com |
+```text
+React + TypeScript
+       |
+       +-- Supabase Auth
+       |       |
+       |       +-- Autenticação e sessões
+       |
+       +-- PostgreSQL
+               |
+               +-- Row Level Security (RLS)
+               |
+               +-- Funções RPC
+                       |
+                       +-- Controle de presença
+                       +-- Validação do QR Code
+                       +-- Distribuição round-robin
+                       +-- Histórico persistente
+```
 
-**As senhas de demonstração são fornecidas separadamente à equipe avaliadora, por canal privado.**
+### Por que utilizar funções RPC no PostgreSQL?
 
-O cadastro público de novos usuários está desabilitado. As contas são administradas pelo Supabase Auth.
+As regras críticas são executadas no banco de dados, em vez de depender exclusivamente do frontend.
 
-## 5. Execução local
+Essa decisão permite:
+
+- Centralizar a validação de permissões.
+- Utilizar um relógio confiável para controlar expirações.
+- Garantir atomicidade nas distribuições.
+- Controlar operações concorrentes.
+- Impedir alterações indevidas na fila e no histórico.
+
+### Segurança
+
+O sistema combina Supabase Auth, RLS e permissões explícitas no PostgreSQL.
+
+O gestor possui acesso administrativo aos leads, enquanto cada corretor visualiza somente as oportunidades sob sua responsabilidade.
+
+As funções administrativas verificam o papel do usuário no banco de dados.
+
+O frontend utiliza somente a chave publicável do Supabase. Chaves privilegiadas e credenciais de infraestrutura não são incluídas no código-fonte.
+
+## Como executar localmente
 
 ### Pré-requisitos
 
 - Node.js compatível com a versão do Vite utilizada no projeto
 - npm
-- Projeto Supabase configurado
+- Projeto Supabase
 
 Clone o repositório:
 
 ```bash
-git clone https://github.com/brunobonettib/san-remo-crm.git
-cd san-remo-crm
+git clone https://github.com/brunobonettib/chaveflow-crm.git
+cd chaveflow-crm
 ```
 
 Instale as dependências:
@@ -169,7 +174,7 @@ Instale as dependências:
 npm install
 ```
 
-Copie o arquivo `.env.example` para `.env.local` e configure as variáveis:
+Crie `.env.local` a partir de `.env.example`:
 
 ```dotenv
 VITE_SUPABASE_URL=https://seu-projeto.supabase.co
@@ -189,43 +194,41 @@ Para validar o build de produção:
 npm run build
 ```
 
-O arquivo `vercel.json` configura o redirecionamento necessário para as rotas do React Router na Vercel.
+O projeto utiliza configuração de rotas para permitir navegação direta entre páginas na Vercel.
 
-**Observação:** para testar a leitura do QR Code em um celular durante o desenvolvimento, configure `VITE_APP_URL` com um endereço da aplicação acessível pelo aparelho, como a URL publicada na Vercel.
+**Observação:** para testar a leitura do QR Code em um celular, configure `VITE_APP_URL` com um endereço acessível pelo dispositivo, como a URL pública da aplicação.
 
-**Segurança:** variáveis com prefixo `VITE_` ficam disponíveis no frontend. Nunca utilize senhas, chaves secretas ou `service_role` nessas variáveis.
+Nunca utilize chaves secretas ou `service_role` em variáveis com prefixo `VITE_`.
 
-## 6. Configuração do Supabase
+## Configuração do Supabase
 
 Crie um projeto Supabase e habilite a autenticação por e-mail e senha.
 
-### Migrações do banco de dados
+### Migrações do banco
 
-As migrações SQL estão disponíveis em `supabase/migrations/`.
+As migrações estão disponíveis em `supabase/migrations/`.
 
-Execute os arquivos na seguinte ordem, utilizando o SQL Editor do Supabase com privilégios administrativos:
+Execute os arquivos na ordem indicada, utilizando o SQL Editor do Supabase com privilégios administrativos.
 
-| Ordem | Arquivo | Responsabilidade |
+| Ordem | Arquivo | Finalidade |
 |---|---|---|
 | 1 | `20261112000000_create_profiles.sql` | Perfis e autorização |
 | 2 | `20261112010000_create_leads.sql` | Leads, etapas e observações |
-| 3 | `20261112020000_create_presenca.sql` | QR Code, presença e fila |
-| 4 | `20261112030000_create_distribuicao.sql` | Round-robin e histórico |
+| 3 | `20261112020000_create_presenca.sql` | Presença e QR Code |
+| 4 | `20261112030000_create_distribuicao.sql` | Distribuição e histórico |
 
-As migrações criam as estruturas necessárias do PostgreSQL, incluindo tabelas, índices, políticas RLS, permissões e funções.
-
-Execute-as uma única vez, na ordem indicada, em um banco novo.
+As migrações criam tabelas, índices, políticas RLS, permissões e funções necessárias para o funcionamento da aplicação.
 
 ### Criação dos usuários
 
-1. Acesse **Authentication → Users** no painel do Supabase.
+1. Acesse **Authentication → Users** no Supabase.
 2. Crie as contas fictícias de demonstração.
 3. Copie o UUID de cada usuário.
 4. Cadastre o perfil correspondente em `public.profiles`.
-5. Informe o nome e o papel (`gestor` ou `corretor`).
-6. Desabilite novos cadastros públicos nas configurações de autenticação.
+5. Associe o papel `gestor` ou `corretor`.
+6. Desabilite o cadastro público, caso as contas sejam administradas exclusivamente pelo projeto.
 
-Exemplo de cadastro administrativo de perfil:
+Exemplo de cadastro administrativo:
 
 ```sql
 insert into public.profiles (id, nome, papel)
@@ -236,111 +239,88 @@ values (
 );
 ```
 
-Substitua o UUID pelo identificador do usuário criado no Supabase Auth. Execute o comando como administrador.
+Substitua o UUID pelo identificador do usuário criado no Supabase Auth e execute o comando como administrador.
 
-Mantenha o schema `private` fora dos schemas expostos pela Data API.
+O schema `private` deve permanecer fora dos schemas expostos pela Data API.
 
-Em **Authentication → URL Configuration**, configure o endereço público da aplicação e os redirecionamentos autorizados.
+Configure também o endereço da aplicação em **Authentication → URL Configuration**.
 
-As migrações não criam automaticamente as contas de demonstração nem os leads. Os contatos podem ser cadastrados pela interface do gestor após a configuração.
+As migrações não criam automaticamente as contas de demonstração nem os leads fictícios.
 
-## 7. Como reproduzir os fluxos principais
+## Como testar as funcionalidades
 
-### Fluxo 1 — Gestão de leads
+### 1. Gestão de leads
 
-1. Entre na aplicação como gestor.
-2. Acesse o funil e o reservatório.
-3. Cadastre um novo lead fictício.
-4. Verifique que ele permanece sem responsável no reservatório.
-5. Abra os detalhes, edite os dados e registre uma observação.
-6. Recarregue a página para verificar a persistência.
+Entre como gestor, cadastre um lead fictício e verifique que ele aparece no reservatório.
 
-### Fluxo 2 — Controle de presença
+Edite os dados, registre uma observação e recarregue a página para conferir a persistência.
 
-1. Entre como gestor e localize o QR Code.
-2. Escaneie o código com a câmera de um celular.
-3. Entre com uma conta de corretor.
-4. Confirme explicitamente a presença.
-5. Confira a posição e a validade na fila do gestor.
-6. Repita com outros corretores.
-7. Renove uma presença ainda válida para verificar a preservação da posição.
+### 2. Controle de presença
 
-### Fluxo 3 — Distribuição round-robin
+No painel do gestor, exiba o QR Code.
 
-1. Mantenha corretores habilitados e leads disponíveis no reservatório.
-2. Entre como gestor.
-3. Clique em **Distribuir próximo lead**.
-4. Verifique o lead e o corretor selecionados.
-5. Observe a movimentação da fila.
-6. Consulte o histórico.
-7. Repita a operação para verificar a ordem circular.
+Escaneie o código com a câmera de um celular, autentique-se como corretor e confirme a presença.
 
-### Fluxo 4 — Atendimento pelo corretor
+Confira a validade e a posição do corretor na fila.
 
-1. Entre como um corretor que recebeu um lead.
-2. Confira os contatos atribuídos ao seu perfil.
-3. Abra os detalhes de um lead.
-4. Atualize sua etapa de atendimento.
-5. Registre uma observação.
-6. Recarregue a página para conferir a persistência.
+### 3. Distribuição round-robin
 
-O corretor não possui permissão para distribuir leads ou consultar contatos atribuídos a outros profissionais.
+Com corretores habilitados e leads disponíveis no reservatório, acione **Distribuir próximo lead**.
 
-## 8. Desenvolvimento com inteligência artificial
+Confira o resultado, a movimentação do corretor na fila e o histórico.
 
-O projeto foi desenvolvido com apoio de duas ferramentas de IA:
+Repita a operação para observar a distribuição circular.
 
-**OpenAI Codex (VS Code):** utilizado como assistente de desenvolvimento na implementação de componentes React e TypeScript, integração com Supabase, migrações SQL, ajustes de interface, responsividade e testes direcionados.
+### 4. Atendimento pelo corretor
 
-**ChatGPT:** utilizado no entendimento dos requisitos, apoio às decisões arquiteturais, análise das regras de negócio, revisão de segurança, planejamento das validações e documentação.
+Entre com a conta de um corretor que recebeu um lead.
 
-### Como os resultados foram conferidos
+Abra os detalhes, atualize a etapa e registre uma observação.
 
-As implementações foram verificadas por meio de:
+O corretor não pode consultar leads de outros profissionais nem executar operações administrativas.
+
+## Testes e validação
+
+Durante o desenvolvimento foram realizados:
 
 - Builds de produção.
-- Testes automatizados direcionados.
-- Consultas e verificações SQL no PostgreSQL.
-- Testes manuais de autenticação e autorização.
-- Testes reais de leitura do QR Code pelo celular.
-- Testes de distribuição e persistência dos dados.
-- Verificações de responsividade em diferentes resoluções.
-- Execução dos fluxos principais na aplicação publicada na Vercel.
-
-### Cenários validados
-
-- Login e redirecionamento conforme o perfil.
-- Cadastro, edição e persistência de leads.
-- Alteração de etapas e registro de observações.
-- Restrição de acesso aos dados por perfil.
+- Testes direcionados das regras de distribuição.
+- Verificações de concorrência e rollback.
+- Testes de permissões e políticas RLS.
 - Rejeição de QR Code expirado.
-- Renovação de presença sem alteração de posição.
-- Cinco distribuições consecutivas na ordem circular correta.
-- Histórico persistente e tratamento de reservatório vazio.
-- Bloqueio da distribuição para um corretor autenticado.
-- Testes locais direcionados de concorrência, expiração e rollback.
+- Renovação de presença com preservação da posição.
+- Testes reais de leitura do QR Code pelo celular.
+- Distribuições consecutivas com persistência do histórico.
+- Verificações de responsividade em desktop e dispositivos móveis.
 
-O uso de IA foi acompanhado de verificações técnicas e testes funcionais. As decisões de implementação foram avaliadas considerando os requisitos do desafio.
+Os testes automatizados direcionados foram realizados durante o desenvolvimento. O repositório não inclui atualmente uma suíte automatizada completa e reproduzível.
 
-## 9. Limitações conhecidas
+## Uso de inteligência artificial
 
-O projeto foi desenvolvido como um MVP, priorizando os requisitos obrigatórios do desafio.
+O desenvolvimento contou com apoio de **OpenAI Codex** e **ChatGPT**.
 
-- O QR Code é exibido na área do gestor; não existe uma tela independente para totens ou recepção.
-- A confirmação de presença não utiliza geolocalização, pois não é um requisito do desafio.
-- Os cenários de retorno à fila após cinco horas e ausência total de corretores elegíveis foram cobertos por testes locais, mas não homologados integralmente na aplicação publicada.
-- A animação visual de roleta não foi implementada, pois é opcional. A distribuição circular está funcional.
+**Codex:** implementação de componentes React, integração com Supabase, migrações SQL, ajustes de interface e testes direcionados.
 
-## 10. Publicação
+**ChatGPT:** análise dos requisitos, apoio às decisões de arquitetura, revisão das regras de negócio, orientação de testes e documentação.
 
-A aplicação está hospedada na **Vercel**, com integração ao repositório GitHub e persistência no Supabase.
+As implementações foram acompanhadas de verificações manuais, builds e consultas SQL.
 
-As variáveis de ambiente necessárias são configuradas no painel da Vercel, sem incluir credenciais privilegiadas no código-fonte.
+## Limitações conhecidas
 
-**Aplicação:** https://san-remo-crm-rose.vercel.app
+- A aplicação utiliza exclusivamente dados fictícios para demonstração.
+- O ambiente público é compartilhado e seus dados podem ser alterados por visitantes.
+- O QR Code é exibido na área do gestor, sem uma tela independente para recepção.
+- A confirmação de presença não utiliza geolocalização.
+- A distribuição circular não possui animação visual de roleta.
+- Os testes automatizados executados durante o desenvolvimento não estão integralmente versionados no repositório.
+- A disponibilidade da demonstração depende dos serviços de hospedagem e banco de dados utilizados.
 
-**Repositório:** https://github.com/brunobonettib/san-remo-crm
+## Sobre o projeto
+
+O ChaveFlow CRM surgiu de um desafio técnico Full Stack e foi posteriormente adaptado como projeto independente de portfólio.
+
+O desenvolvimento priorizou uma aplicação funcional, responsiva e com regras críticas de negócio executadas de forma segura no PostgreSQL.
 
 ---
 
-**San Remo CRM — Desafio Técnico Full Stack | Novembro de 2026**
+**ChaveFlow CRM — Projeto Full Stack de portfólio | 2026**
