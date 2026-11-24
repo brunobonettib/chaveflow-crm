@@ -31,8 +31,8 @@ export function HomePage({ papel }: { papel: Papel }) {
         </h1>
         <p className="workspace-intro">
           {isGestor
-            ? 'Bem-vindo ao seu ambiente de gestão na San Remo.'
-            : 'Bem-vindo ao seu espaço de trabalho na San Remo.'}
+            ? 'Bem-vindo ao seu ambiente de gestão no ChaveFlow CRM.'
+            : 'Bem-vindo ao seu espaço de trabalho no ChaveFlow CRM.'}
         </p>
         {logoutError && (
           <p className="error-message" role="alert">
@@ -62,7 +62,7 @@ export function HomePage({ papel }: { papel: Papel }) {
         </div>
       </main>
       <footer className="workspace-footer">
-        San Remo · Pessoas, conexões e conquistas.
+        ChaveFlow CRM · Pessoas, conexões e conquistas.
       </footer>
     </div>
   )

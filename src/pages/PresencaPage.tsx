@@ -65,7 +65,7 @@ function Confirmation({ token }: { token: string | null }) {
         <span className="presence-confirm-icon" aria-hidden="true">
           {result ? '✓' : '◇'}
         </span>
-        <p className="eyebrow">PRESENÇA SAN REMO</p>
+        <p className="eyebrow">PRESENÇA CHAVEFLOW</p>
         <h1>{result ? 'Você está na fila.' : 'Vamos começar?'}</h1>
         <p>
           Olá, {profile?.nome}.{' '}
@@ -137,7 +137,7 @@ function Confirmation({ token }: { token: string | null }) {
         </p>
       </section>
       <footer className="workspace-footer">
-        San Remo · Pessoas, conexões e conquistas.
+        ChaveFlow CRM · Pessoas, conexões e conquistas.
       </footer>
     </main>
   )

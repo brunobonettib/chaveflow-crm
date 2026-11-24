@@ -1,6 +1,6 @@
 export function Brand() {
   return (
-    <div className="brand" aria-label="San Remo CRM Imobiliário">
+    <div className="brand" aria-label="ChaveFlow CRM Imobiliário">
       <svg
         className="brand-symbol"
         viewBox="0 0 40 40"
@@ -16,7 +16,7 @@ export function Brand() {
       </svg>
       <div>
         <span className="brand-name">
-          SAN REMO<span className="brand-dot">.</span>
+          CHAVEFLOW<span className="brand-dot">.</span>
         </span>
         <span className="brand-caption">CRM IMOBILIÁRIO</span>
       </div>

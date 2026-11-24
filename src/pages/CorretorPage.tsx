@@ -169,7 +169,7 @@ export function CorretorPage() {
         </p>
       </main>
       <footer className="workspace-footer">
-        San Remo · Pessoas, conexões e conquistas.
+        ChaveFlow CRM · Pessoas, conexões e conquistas.
       </footer>
       {selected && (
         <LeadDialog

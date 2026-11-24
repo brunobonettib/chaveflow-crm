@@ -58,7 +58,7 @@ export function LoginPage() {
           </h1>
           <p className="login-description">
             Entre na sua conta para acessar o ambiente
-            <br className="desktop-break" /> de trabalho da San Remo.
+            <br className="desktop-break" /> de trabalho do ChaveFlow CRM.
           </p>
           <form
             onSubmit={handleSubmit}
@@ -77,7 +77,7 @@ export function LoginPage() {
                 name="email"
                 type="email"
                 autoComplete="username"
-                placeholder="voce@sanremo.com.br"
+                placeholder="voce@chaveflow.com.br"
                 required
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
@@ -168,17 +168,17 @@ export function LoginPage() {
           </div>
         </div>
         <footer className="login-footer">
-          <span>© {new Date().getFullYear()} San Remo</span>
+          <span>© {new Date().getFullYear()} ChaveFlow CRM</span>
           <span>Feito para conectar oportunidades.</span>
         </footer>
       </section>
       <aside
         className="login-showcase"
-        aria-label="San Remo, pessoas e oportunidades"
+        aria-label="ChaveFlow CRM, pessoas e oportunidades"
       >
         <div className="showcase-top">
           <span className="showcase-tag">PESSOAS. CONEXÕES. CONQUISTAS.</span>
-          <span className="showcase-number">01 / SAN REMO</span>
+          <span className="showcase-number">01 / CHAVEFLOW</span>
         </div>
         <div className="architecture" aria-hidden="true">
           <div className="architecture-orbit" />
@@ -283,7 +283,7 @@ export function LoginPage() {
           </p>
         </div>
         <div className="showcase-bottom">
-          <span>SAN REMO · CRM IMOBILIÁRIO</span>
+          <span>CHAVEFLOW · CRM IMOBILIÁRIO</span>
           <span className="showcase-spark" aria-hidden="true">
             ✳
           </span>

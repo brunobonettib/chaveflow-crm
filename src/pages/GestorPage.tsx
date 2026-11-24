@@ -246,7 +246,7 @@ export function GestorPage() {
         </p>
       </main>
       <footer className="workspace-footer">
-        San Remo · Pessoas, conexões e conquistas.
+        ChaveFlow CRM · Pessoas, conexões e conquistas.
       </footer>
       {dialog && (
         <LeadDialog

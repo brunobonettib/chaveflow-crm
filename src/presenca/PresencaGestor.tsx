@@ -75,7 +75,7 @@ function QrPresenca() {
               size={236}
               marginSize={4}
               level="M"
-              title="QR Code para confirmar presença na San Remo"
+              title="QR Code para confirmar presença no ChaveFlow CRM"
             />
           </div>
           <div className="presence-countdown">
